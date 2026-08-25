@@ -30,6 +30,7 @@ public abstract class Documento {
     // equals
     import java.util.Objects;
 
+
     @Override
     public boolean equals(Object objeto) {
         // 1. Verificar se objeto e this são a mesma referência.
