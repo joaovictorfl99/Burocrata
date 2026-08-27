@@ -1,10 +1,37 @@
 package estudantes.entidades;
+import professor.entidades.CodigoCurso;
+import java.util.Objects;
 
 public class Oficio extends Deliberacao {
     private String destinatario;
 
     // Construtor
-    // getDestinatario()
+    public Oficio(String criador, CodigoCurso codigoCurso, int paginas, String texto, String destinatario){
+        super(criador, codigoCurso, paginas, texto);
+        this.destinatario = destinatario;
+    }
+    // Getter, caso necessário
+    public String getDestinatario(){
+        return destinatario;
+    }
+
     // equals
+    @Override
+    public boolean equals(Object objeto){
+        if(this == objeto){
+            return true;
+        }
+        if(!super.equals(objeto)){
+            return false;
+        }
+
+        Circular outraCircular = (Circular) objeto;
+
+        return Objects.equals(destinatario, outraCircular.destinatario);
+    }
     // hashCode
+    @Override
+    public int hashcode(Object objeto){
+        return Objects.hash(super.hashCode(), destinatario);
+    }
 }
