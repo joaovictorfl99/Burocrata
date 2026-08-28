@@ -7,7 +7,7 @@ public class Portaria extends Norma {
 
     // Construtor
     public Portaria(String criador, CodigoCurso codigoCurso, int paginas, int numero, boolean valido, String texto, int anoInicio){
-        super(criador, codigoCurso, paginas, valido, texto);
+        super(criador, codigoCurso, paginas, numero, valido, texto);
         this.anoInicio = anoInicio;
     }
 
@@ -18,7 +18,7 @@ public class Portaria extends Norma {
 
     // equals
     @Override
-    public boolean equals(Objects objeto){
+    public boolean equals(Object objeto){
         if(this == objeto){
             return true;
         }
@@ -34,7 +34,7 @@ public class Portaria extends Norma {
     }
     // hashCode
     @Override
-    public int hashcode(Objects objects){
+    public int hashCode(){
         return Objects.hash(super.hashCode(), anoInicio);
     }
 }

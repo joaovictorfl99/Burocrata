@@ -25,13 +25,13 @@ public class Oficio extends Deliberacao {
             return false;
         }
 
-        Circular outraCircular = (Circular) objeto;
+        Oficio outroOficio = (Oficio) objeto;
 
         return Objects.equals(destinatario, outraCircular.destinatario);
     }
     // hashCode
     @Override
-    public int hashcode(Object objeto){
+    public int hashCode(){
         return Objects.hash(super.hashCode(), destinatario);
     }
 }

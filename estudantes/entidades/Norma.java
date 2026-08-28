@@ -21,7 +21,7 @@ public class Norma extends DocumentoAdministrativo {
         return numero;
     }
 
-    public boolean getValido(){
+    public boolean isValido(){
         return valido;
     }
 
@@ -46,7 +46,7 @@ public class Norma extends DocumentoAdministrativo {
     }
     // hashCode
     @Override
-    public int hashcode(){
+    public int hashCode(){
         return Objects.hash(super.hashCode(), numero, valido, texto);
     }
 }

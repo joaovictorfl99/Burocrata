@@ -31,8 +31,6 @@ public abstract class Documento {
 
     public int getPaginas(){return paginas;}
 
-    // equals
-    import java.util.Objects;
 
     // hashCode
     @Override

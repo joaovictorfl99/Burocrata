@@ -9,18 +9,18 @@ public class Edital extends Norma {
 
     // Construtor
     public Edital(String criador, CodigoCurso codigoCurso, int paginas, int numero, boolean valido, String texto, String[] responsaveis){
-        super(criador, codigoCurso, paginas, valido, texto);
+        super(criador, codigoCurso, paginas, numero, valido, texto);
         this.responsaveis = responsaveis;
     }
 
     // Getter, caso necessário
-    public int getResponsaveis(){
+    public String[] getResponsaveis(){
         return responsaveis;
     }
 
     // equals
     @Override
-    public boolean equals(Objects objeto){
+    public boolean equals(Object objeto){
         if(this == objeto){
             return true;
         }
@@ -36,7 +36,7 @@ public class Edital extends Norma {
     }
     // hashCode
     @Override
-    public int hashcode(Objects objects){
+    public int hashCode(){
         return Objects.hash(super.hashCode(), responsaveis);
     }
 }

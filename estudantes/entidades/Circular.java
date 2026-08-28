@@ -1,5 +1,7 @@
 package estudantes.entidades;
 import professor.entidades.CodigoCurso;
+
+import java.lang.reflect.Array;
 import java.util.Objects;
 
 public class Circular extends Deliberacao {
@@ -7,7 +9,7 @@ public class Circular extends Deliberacao {
 
     // Construtor
     public Circular(String criador, CodigoCurso codigoCurso, int paginas, String texto, String[] destinatarios){
-        super(criador, codigoCurso, paginas);
+        super(criador, codigoCurso, paginas, texto);
         this.destinatarios = destinatarios;
     }
     // Getter, caso necessário
@@ -27,11 +29,11 @@ public class Circular extends Deliberacao {
 
         Circular outraCircular = (Circular) objeto;
 
-        return Objects.equals(destinatarios, outraCircular.destinatarios);
+        return Array.equals(destinatarios, outraCircular.destinatarios);
     }
     // hashCode
     @Override
-    public int hashcode(Object objeto){
+    public int hashCode(){
         return Objects.hash(super.hashCode(), destinatarios);
     }
 }

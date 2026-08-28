@@ -1,6 +1,5 @@
 package estudantes.entidades;
 import professor.entidades.CodigoCurso;
-import javax.print.attribute.standard.DocumentName;
 import java.util.Objects;
 
 public abstract class Deliberacao extends DocumentoAdministrativo {
@@ -32,7 +31,7 @@ public abstract class Deliberacao extends DocumentoAdministrativo {
     }
     // hashCode
     @Override
-    public int hashcode(Object objeto){
+    public int hashCode(){
         return Objects.hash(super.hashCode(), texto);
     }
 }
