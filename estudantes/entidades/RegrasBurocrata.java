@@ -74,11 +74,27 @@ public class RegrasBurocrata {
      *
      * Atas podem acompanhar qualquer categoria.
      */
-    private static boolean respeitaRegra2TipoDocumento(
-            Processo processo,
-            Documento candidato
-    ) {
-        throw new UnsupportedOperationException("Implementar");
+    private static boolean respeitaRegra2TipoDocumento(Processo processo, Documento candidato) {
+
+        if(ehAta(candidato)){
+            return true;
+        }
+
+        boolean candidatoEhDocAdm = ehAdministrativo(candidato);
+
+        for(Documento documento : processo.pegarCopiaDoProcesso()){
+
+            if(ehAta(documento)){
+                continue;
+            }
+
+            boolean docEhDocAdm = ehAdministrativo(documento);
+
+            if(candidatoEhDocAdm != docEhDocAdm){
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -86,11 +102,19 @@ public class RegrasBurocrata {
      * Portaria ou Edital válido com 100 páginas
      * ou mais deve ficar sozinho no processo.
      */
-    private static boolean respeitaRegra4DocumentoSubstancial(
-            Processo processo,
-            Documento candidato
-    ) {
-        throw new UnsupportedOperationException("Implementar");
+    private static boolean respeitaRegra4DocumentoSubstancial(Processo processo, Documento candidato) {
+
+        if(ehDocumentoSubstancialValido(candidato)){
+            return processo.contarDocumentos() == 0;
+        }
+
+        for(Documento documento : processo.pegarCopiaDoProcesso()){
+
+            if(ehDocumentoSubstancialValido(documento)){
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -115,11 +139,22 @@ public class RegrasBurocrata {
      * - Certificados;
      * - Atas.
      */
-    private static boolean respeitaRegra6Diploma(
-            Processo processo,
-            Documento candidato
-    ) {
-        throw new UnsupportedOperationException("Implementar");
+    private static boolean respeitaRegra6Diploma(Processo processo, Documento candidato) {
+        if(ehDiploma(candidato)){
+            for(Documento documento : processo.pegarCopiaDoProcesso()){
+                if(!ehDiploma(documento) && !ehCertificado(documento) && !ehAta(documento)){
+                    return false;
+                }
+            }
+        }
+        else if(!ehCertificado(candidato) && !ehAta(candidato)){
+            for(Documento documento : processo.pegarCopiaDoProcesso()){
+                if(ehDiploma(documento)){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     /**
@@ -187,23 +222,30 @@ public class RegrasBurocrata {
     }
 
     private static boolean ehAdministrativo(Documento documento) {
-        throw new UnsupportedOperationException("Implementar");
+        return documento instanceof DocumentoAdministrativo;
     }
 
     private static boolean ehAcademico(Documento documento) {
-        throw new UnsupportedOperationException("Implementar");
+        return documento instanceof DocumentoAcademico;
     }
 
     private static boolean ehAta(Documento documento) {
         return documento instanceof Ata;
     }
 
-    private static boolean ehDocumentoSubstancialValido(Documento documento) {
+    private static boolean ehDocumentoSubstancial(Documento documento) {
         if(!ehEditalouPortaria(documento)){
             return false;
         }
+        return documento.getPaginas() >= 100;
+    }
+
+    private static boolean ehDocumentoSubstancialValido(Documento documento) {
+        if(!ehDocumentoSubstancial(documento)){
+            return false;
+        }
         Norma doc = (Norma) documento; //Faz documento ser tratado como Norma, para poder usar o atributo validade
-        return doc.getPaginas() > 100 && doc.isValido();
+        return doc.isValido();
     }
 
     private static boolean ehEditalouPortaria(Documento documento) {
