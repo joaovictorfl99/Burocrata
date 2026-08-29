@@ -27,7 +27,7 @@ public class Oficio extends Deliberacao {
 
         Oficio outroOficio = (Oficio) objeto;
 
-        return Objects.equals(destinatario, outraCircular.destinatario);
+        return Objects.equals(destinatario, outroOficio.destinatario);
     }
     // hashCode
     @Override

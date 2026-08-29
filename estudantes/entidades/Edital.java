@@ -2,6 +2,7 @@ package estudantes.entidades;
 
 import professor.entidades.CodigoCurso;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 public class Edital extends Norma {
@@ -31,12 +32,12 @@ public class Edital extends Norma {
 
         Edital outroEdital = (Edital) objeto;
 
-        return Objects.equals(responsaveis, outroEdital.responsaveis);
+        return Arrays.equals(responsaveis, outroEdital.responsaveis);
 
     }
     // hashCode
     @Override
     public int hashCode(){
-        return Objects.hash(super.hashCode(), responsaveis);
+        return Objects.hash(super.hashCode(), Arrays.hashCode(responsaveis));
     }
 }
