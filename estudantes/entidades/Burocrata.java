@@ -55,9 +55,32 @@ public class Burocrata {
      * @see professor.entidades.Universidade#removerDocumentoDoMonteDoCurso(estudantes.entidades.Documento, professor.entidades.CodigoCurso)
      * @see professor.entidades.Universidade#devolverDocumentoParaMonteDoCurso(estudantes.entidades.Documento, professor.entidades.CodigoCurso) 
      */
-    public void trabalhar(){
-        
+   public void trabalhar() {
+    for (Processo processo : mesa.getProcessos()) {
+        if (processo != null) {
+            for (CodigoCurso curso : CodigoCurso.values()) {
+                Documento[] documentos =
+                        universidade.pegarCopiaDoMonteDoCurso(curso);
+
+                for (Documento documento : documentos) {
+                    if (RegrasBurocrata.podeAdicionar(processo, documento)) {
+                        boolean removeu =
+                                universidade.removerDocumentoDoMonteDoCurso(
+                                        documento, curso);
+
+                        if (removeu) {
+                            processo.adicionarDocumento(documento);
+                        }
+                    }
+                }
+            }
+
+            if (RegrasBurocrata.podeDespachar(processo)) {
+                universidade.despachar(processo);
+            }
+        }
     }
+}
     
     /**
      * Retorna o valor atual de estresse do burocrata.
