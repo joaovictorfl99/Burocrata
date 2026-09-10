@@ -20,11 +20,11 @@ public class RegrasBurocrata {
      * Deve verificar:
      * - processo e candidato não nulos;
      * - limite de 250 páginas;
-     * - regra 1;
-     * - regra 2;
-     * - regra 4;
+     * - regra 1; ok
+     * - regra 2; ok
+     * - regra 4; ok
      * - regra 5;
-     * - regra 6;
+     * - regra 6; ok
      * - regra 7.
      *
      *
@@ -65,6 +65,7 @@ public class RegrasBurocrata {
                 return false;
             }
         }
+        return true;
     }
 
     /**
@@ -212,6 +213,7 @@ public class RegrasBurocrata {
         throw new UnsupportedOperationException("Implementar");
     }
 
+
     private static boolean ehPosGraduacao(Documento documento) {
 
         CodigoCurso codigo = documento.getCodigoCurso();
@@ -226,10 +228,12 @@ public class RegrasBurocrata {
     }
 
     private static boolean ehAcademico(Documento documento) {
+
         return documento instanceof DocumentoAcademico;
     }
 
     private static boolean ehAta(Documento documento) {
+
         return documento instanceof Ata;
     }
 
@@ -257,6 +261,7 @@ public class RegrasBurocrata {
     }
 
     private static boolean ehDiploma(Documento documento) {
+
         return documento instanceof Diploma;
     }
 
@@ -266,6 +271,7 @@ public class RegrasBurocrata {
     }
 
     private static boolean ehAtestado(Documento documento) {
+
         return documento instanceof Atestado;
     }
 }
