@@ -2,57 +2,57 @@ package estudantes.entidades;
 import professor.entidades.CodigoCurso;
 import professor.entidades.Processo;
 
-/**
- * Centraliza as regras usadas pelo Burocrata para organizar
- * e despachar documentos.
- *
- * Esta classe não representa um tipo de documento.
- * Por isso, não herda de Documento nem de Processo.
- */
+
 public class RegrasBurocrata {
 
     private RegrasBurocrata() {
     }
 
-    /**
-     * Verifica se o candidato pode ser adicionado ao processo.
-     *
-     * Deve verificar:
-     * - processo e candidato não nulos;
-     * - limite de 250 páginas;
-     * - regra 1; ok
-     * - regra 2; ok
-     * - regra 4; ok
-     * - regra 5;
-     * - regra 6; ok
-     * - regra 7.
-     *
-     *
-     * A regra 3 pertence ao despacho e não à adição.
-     */
+
     public static boolean podeAdicionar(Processo processo, Documento candidato) {
-        throw new UnsupportedOperationException("Implementar");
-
+        if(processo == null || candidato == null){
+            return false;
+        }
+        else if(!respeitaLimiteDePaginas(processo,candidato)){
+            return false;
+        }
+        else if(!respeitaRegra1Curso(processo,candidato)){
+            return false;
+        }
+        else if(!respeitaRegra2TipoDocumento(processo,candidato)){
+            return false;
+        }
+        else if(!respeitaRegra4DocumentoSubstancial(processo,candidato)){
+            return false;
+        }
+        else if(!respeitaRegra5Destinatarios(processo,candidato)){
+            return false;
+        }
+        else if(!respeitaRegra6Diploma(processo,candidato)){
+            return false;
+        }
+        else if(!respeitaRegra7CategoriaAtestado(processo,candidato)){
+            return false;
+        }
+       
+       return true;
 
     }
 
-    /**
-     * Verifica se o processo pode ser despachado.
-     *
-     * Deve garantir que:
-     * - o processo não seja nulo;
-     * - o processo não esteja vazio;
-     * - o processo não contenha apenas Atas.
-     */
     public static boolean podeDespachar(Processo processo) {
-        throw new UnsupportedOperationException("Implementar");
+        if(processo == null){
+            return false;
+        }
+        else if (processo.contarDocumentos() == 0){
+            return false;
+        }
+        else if(contemApenasAtas(processo)){
+            return false;
+        }
+        return true;
     }
 
-    /**
-     * Regra 1:
-     * não misturar documentos de graduação
-     * com documentos de pós-graduação.
-     */
+
     private static boolean respeitaRegra1Curso(Processo processo, Documento candidato) {
 
         boolean candidatoEhPos = ehPosGraduacao(candidato);
@@ -68,13 +68,6 @@ public class RegrasBurocrata {
         return true;
     }
 
-    /**
-     * Regra 2:
-     * não misturar documentos administrativos
-     * com documentos acadêmicos.
-     *
-     * Atas podem acompanhar qualquer categoria.
-     */
     private static boolean respeitaRegra2TipoDocumento(Processo processo, Documento candidato) {
 
         if(ehAta(candidato)){
@@ -98,11 +91,6 @@ public class RegrasBurocrata {
         return true;
     }
 
-    /**
-     * Regra 4:
-     * Portaria ou Edital válido com 100 páginas
-     * ou mais deve ficar sozinho no processo.
-     */
     private static boolean respeitaRegra4DocumentoSubstancial(Processo processo, Documento candidato) {
 
         if(ehDocumentoSubstancialValido(candidato)){
@@ -118,28 +106,81 @@ public class RegrasBurocrata {
         return true;
     }
 
-    /**
-     * Regra 5:
-     * Circulares e Ofícios diferentes precisam
-     * ter pelo menos um destinatário em comum.
-     *
-     * A interseção deve ser calculada considerando
-     * todos os documentos desse tipo no processo.
-     */
-    private static boolean respeitaRegra5Destinatarios(
-            Processo processo,
-            Documento candidato
-    ) {
-        throw new UnsupportedOperationException("Implementar");
+private static boolean respeitaRegra5Destinatarios(Processo processo, Documento candidato) {
+
+    if (!ehCircularOuOficio(candidato)) {
+        return true;
     }
 
-    /**
-     * Regra 6:
-     * Diplomas só podem ser acompanhados por:
-     * - Diplomas;
-     * - Certificados;
-     * - Atas.
-     */
+    Documento[] documentos = processo.pegarCopiaDoProcesso();
+    boolean temCircularOuOficio = false;
+
+    for (Documento documento : documentos) {
+        if (ehCircularOuOficio(documento)) {
+            temCircularOuOficio = true;
+            break;
+        }
+    }
+
+    if (!temCircularOuOficio) {
+        return true;
+    }
+
+    String[] destinatarios;
+
+    if (candidato instanceof Circular) {
+        destinatarios = ((Circular) candidato).getDestinatarios();
+    }
+    else {
+        destinatarios = new String[] {
+            ((Oficio) candidato).getDestinatario()
+        };
+    }
+
+    for (String nome : destinatarios) {
+        boolean presenteEmTodos = true;
+
+        for (Documento documento : documentos) {
+            if (ehCircularOuOficio(documento)
+                    && !temDestinatario(documento, nome)) {
+                presenteEmTodos = false;
+                break;
+            }
+        }
+
+        if (presenteEmTodos) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+private static boolean temDestinatario(
+        Documento documento, String nome) {
+
+    if (nome == null) {
+        return false;
+    }
+
+    if (documento instanceof Oficio) {
+        Oficio oficio = (Oficio) documento;
+        return nome.equals(oficio.getDestinatario());
+    }
+
+    if (documento instanceof Circular) {
+        Circular circular = (Circular) documento;
+
+        for (String destinatario : circular.getDestinatarios()) {
+            if (nome.equals(destinatario)) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
     private static boolean respeitaRegra6Diploma(Processo processo, Documento candidato) {
         if(ehDiploma(candidato)){
             for(Documento documento : processo.pegarCopiaDoProcesso()){
@@ -158,22 +199,36 @@ public class RegrasBurocrata {
         return true;
     }
 
-    /**
-     * Regra 7:
-     * Atestados de categorias diferentes
-     * não podem estar no mesmo processo.
-     */
-    private static boolean respeitaRegra7CategoriaAtestado(
-            Processo processo,
-            Documento candidato
-    ) {
-        throw new UnsupportedOperationException("Implementar");
+private static boolean respeitaRegra7CategoriaAtestado(Processo processo, Documento candidato) {
+    
+    if (!ehAtestado(candidato)) {
+        return true;
     }
 
+    Atestado atestadoCandidato = (Atestado) candidato;
+    String categoriaCandidato = atestadoCandidato.getCategoria();
 
-     //Verifica o limite máximo de 250 páginas.
+    for (Documento documento : processo.pegarCopiaDoProcesso()) {
+        if (ehAtestado(documento)) {
+            Atestado outroAtestado = (Atestado) documento;
+            String outraCategoria = outroAtestado.getCategoria();
+
+            if (categoriaCandidato == null) {
+                if (outraCategoria != null) {
+                    return false;
+                }
+            }
+            else if (!categoriaCandidato.equals(outraCategoria)) {
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
     private static boolean respeitaLimiteDePaginas(Processo processo, Documento candidato) {
-        return contarPaginasComCandidato(processo, candidato <= 250;
+        return contarPaginasComCandidato(processo, candidato) <= 250;
 
     }
 
@@ -203,24 +258,13 @@ public class RegrasBurocrata {
         return totalPaginas;
     }
 
-    /**
-     * Obtém os documentos atuais do processo e inclui
-     * o candidato apenas em uma estrutura local de análise.
-     *
-     * Não deve alterar o processo real.
-     */
-    private static Documento[] obterDocumentosComCandidato(Processo processo, Documento candidato) {
-        throw new UnsupportedOperationException("Implementar");
-    }
-
-
     private static boolean ehPosGraduacao(Documento documento) {
 
         CodigoCurso codigo = documento.getCodigoCurso();
 
-        return codigo == POS_GRADUACAO_COMPUTACAO ||
-                codigo == POS_GRADUACAO_ENGENHARIA_ELETRICA ||
-                codigo == POS_GRADUACAO_MICROELETRONICA;
+        return codigo == CodigoCurso.POS_GRADUACAO_COMPUTACAO ||
+                codigo == CodigoCurso.POS_GRADUACAO_ENGENHARIA_ELETRICA ||
+                codigo == CodigoCurso.POS_GRADUACAO_MICROELETRONICA;
     }
 
     private static boolean ehAdministrativo(Documento documento) {
