@@ -106,80 +106,80 @@ public class RegrasBurocrata {
         return true;
     }
 
-private static boolean respeitaRegra5Destinatarios(Processo processo, Documento candidato) {
+    private static boolean respeitaRegra5Destinatarios(Processo processo, Documento candidato) {
 
-    if (!ehCircularOuOficio(candidato)) {
-        return true;
-    }
-
-    Documento[] documentos = processo.pegarCopiaDoProcesso();
-    boolean temCircularOuOficio = false;
-
-    for (Documento documento : documentos) {
-        if (ehCircularOuOficio(documento)) {
-            temCircularOuOficio = true;
-            break;
+        if (!ehCircularOuOficio(candidato)) {
+            return true;
         }
-    }
 
-    if (!temCircularOuOficio) {
-        return true;
-    }
-
-    String[] destinatarios;
-
-    if (candidato instanceof Circular) {
-        destinatarios = ((Circular) candidato).getDestinatarios();
-    }
-    else {
-        destinatarios = new String[] {
-            ((Oficio) candidato).getDestinatario()
-        };
-    }
-
-    for (String nome : destinatarios) {
-        boolean presenteEmTodos = true;
+        Documento[] documentos = processo.pegarCopiaDoProcesso();
+        boolean temCircularOuOficio = false;
 
         for (Documento documento : documentos) {
-            if (ehCircularOuOficio(documento)
-                    && !temDestinatario(documento, nome)) {
-                presenteEmTodos = false;
+            if (ehCircularOuOficio(documento)) {
+                temCircularOuOficio = true;
                 break;
             }
         }
 
-        if (presenteEmTodos) {
+        if (!temCircularOuOficio) {
             return true;
         }
-    }
 
-    return false;
-}
+        String[] destinatarios;
 
-private static boolean temDestinatario(
-        Documento documento, String nome) {
+        if (candidato instanceof Circular) {
+            destinatarios = ((Circular) candidato).getDestinatarios();
+        }
+        else {
+            destinatarios = new String[] {
+                ((Oficio) candidato).getDestinatario()
+            };
+        }
 
-    if (nome == null) {
-        return false;
-    }
+        for (String nome : destinatarios) {
+            boolean presenteEmTodos = true;
 
-    if (documento instanceof Oficio) {
-        Oficio oficio = (Oficio) documento;
-        return nome.equals(oficio.getDestinatario());
-    }
+            for (Documento documento : documentos) {
+                if (ehCircularOuOficio(documento)
+                        && !temDestinatario(documento, nome)) {
+                    presenteEmTodos = false;
+                    break;
+                }
+            }
 
-    if (documento instanceof Circular) {
-        Circular circular = (Circular) documento;
-
-        for (String destinatario : circular.getDestinatarios()) {
-            if (nome.equals(destinatario)) {
+            if (presenteEmTodos) {
                 return true;
             }
         }
+
+        return false;
     }
 
-    return false;
-}
+    private static boolean temDestinatario(
+            Documento documento, String nome) {
+
+        if (nome == null) {
+            return false;
+        }
+
+        if (documento instanceof Oficio) {
+            Oficio oficio = (Oficio) documento;
+            return nome.equals(oficio.getDestinatario());
+        }
+
+        if (documento instanceof Circular) {
+            Circular circular = (Circular) documento;
+
+            for (String destinatario : circular.getDestinatarios()) {
+                if (nome.equals(destinatario)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
 
     private static boolean respeitaRegra6Diploma(Processo processo, Documento candidato) {
         if(ehDiploma(candidato)){
@@ -199,33 +199,33 @@ private static boolean temDestinatario(
         return true;
     }
 
-private static boolean respeitaRegra7CategoriaAtestado(Processo processo, Documento candidato) {
-    
-    if (!ehAtestado(candidato)) {
-        return true;
-    }
+    private static boolean respeitaRegra7CategoriaAtestado(Processo processo, Documento candidato) {
+        
+        if (!ehAtestado(candidato)) {
+            return true;
+        }
 
-    Atestado atestadoCandidato = (Atestado) candidato;
-    String categoriaCandidato = atestadoCandidato.getCategoria();
+        Atestado atestadoCandidato = (Atestado) candidato;
+        String categoriaCandidato = atestadoCandidato.getCategoria();
 
-    for (Documento documento : processo.pegarCopiaDoProcesso()) {
-        if (ehAtestado(documento)) {
-            Atestado outroAtestado = (Atestado) documento;
-            String outraCategoria = outroAtestado.getCategoria();
+        for (Documento documento : processo.pegarCopiaDoProcesso()) {
+            if (ehAtestado(documento)) {
+                Atestado outroAtestado = (Atestado) documento;
+                String outraCategoria = outroAtestado.getCategoria();
 
-            if (categoriaCandidato == null) {
-                if (outraCategoria != null) {
+                if (categoriaCandidato == null) {
+                    if (outraCategoria != null) {
+                        return false;
+                    }
+                }
+                else if (!categoriaCandidato.equals(outraCategoria)) {
                     return false;
                 }
             }
-            else if (!categoriaCandidato.equals(outraCategoria)) {
-                return false;
-            }
         }
-    }
 
-    return true;
-}
+        return true;
+    }
 
     private static boolean respeitaLimiteDePaginas(Processo processo, Documento candidato) {
         return contarPaginasComCandidato(processo, candidato) <= 250;
