@@ -14,12 +14,11 @@ public class Edital extends Norma {
         this.responsaveis = responsaveis;
     }
 
-    // Getter, caso necessário
     public String[] getResponsaveis(){
         return responsaveis;
     }
 
-    // equals
+
     @Override
     public boolean equals(Object objeto){
         if(this == objeto){
@@ -35,7 +34,7 @@ public class Edital extends Norma {
         return Arrays.equals(responsaveis, outroEdital.responsaveis);
 
     }
-    // hashCode
+
     @Override
     public int hashCode(){
         return Objects.hash(super.hashCode(), Arrays.hashCode(responsaveis));

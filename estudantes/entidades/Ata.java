@@ -10,7 +10,7 @@ public class Ata extends Documento {
     private String[] presentes;
 
 
-    // Construtor
+
     public Ata(String criador, CodigoCurso codigoCurso, int paginas, int numero, String texto, String[] presentes) {
         super(criador, codigoCurso, paginas);
         this.numero = numero;
@@ -19,7 +19,7 @@ public class Ata extends Documento {
     }
 
 
-    // Getters necessários
+
     public int getNumero() {
         return numero;
     }
@@ -31,7 +31,7 @@ public class Ata extends Documento {
     }
 
 
-    // equals
+
     @Override
     public boolean equals(Object objeto) {
         if (this == objeto){
@@ -64,7 +64,7 @@ public class Ata extends Documento {
     }
 
 
-    // hashCode
+
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), numero, texto, Arrays.hashCode(presentes));

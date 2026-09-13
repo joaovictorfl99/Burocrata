@@ -292,7 +292,7 @@ public class RegrasBurocrata {
         if(!ehDocumentoSubstancial(documento)){
             return false;
         }
-        Norma doc = (Norma) documento; //Faz documento ser tratado como Norma, para poder usar o atributo validade
+        Norma doc = (Norma) documento;
         return doc.isValido();
     }
 

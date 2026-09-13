@@ -4,20 +4,20 @@ public abstract class Registro extends DocumentoAcademico {
     private String estudante;
     private long matricula;
 
-    // Construtor
+
     public Registro(String criador, professor.entidades.CodigoCurso codigoCurso, int paginas, long autenticacao, String estudante, long matricula) {
         super(criador, codigoCurso, paginas, autenticacao);
         this.estudante = estudante;
         this.matricula = matricula;
     }
-    // Getters necessários
+
     public String getEstudante() {
         return estudante;
     }
     public long getMatricula() {
         return matricula;
     }
-    // equals
+
     @Override
     public boolean equals(Object objeto) {
         if (this == objeto) {
@@ -32,7 +32,7 @@ public abstract class Registro extends DocumentoAcademico {
         Registro that = (Registro) objeto;
         return matricula == that.matricula && java.util.Objects.equals(estudante, that.estudante);
     }
-    // hashCode
+
     @Override
     public int hashCode() {
         return java.util.Objects.hash(super.hashCode(), estudante, matricula);

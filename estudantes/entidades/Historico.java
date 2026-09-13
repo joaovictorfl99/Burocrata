@@ -4,14 +4,14 @@ public class Historico extends Registro {
     private double coeficiente;
     private String[] componentes;
 
-    // Construtor
+
     public Historico(String criador, professor.entidades.CodigoCurso codigoCurso, int paginas, long autenticacao, String estudante, long matricula, double coeficiente, String[] componentes) {
         super(criador, codigoCurso, paginas, autenticacao, estudante, matricula);
         this.coeficiente = coeficiente;
         this.componentes = componentes;
     }
 
-    // Getters necessários
+
     public double getCoeficiente() {
         return coeficiente;
     }
@@ -19,7 +19,7 @@ public class Historico extends Registro {
         return componentes;
     }
 
-    // equals
+
     @Override
     public boolean equals(Object objeto) {
         if (this == objeto) {
@@ -46,7 +46,7 @@ public class Historico extends Registro {
         return true;
     }
 
-    // hashCode
+
     @Override
     public int hashCode() {
         int result = java.util.Objects.hash(super.hashCode(), coeficiente);

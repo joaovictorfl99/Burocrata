@@ -8,7 +8,7 @@ public class Norma extends DocumentoAdministrativo {
     private boolean valido;
     private String texto;
 
-    // Construtor
+
     public Norma(String criador, CodigoCurso codigoCurso, int paginas, int numero, boolean valido, String texto) {
         super(criador, codigoCurso, paginas);
 
@@ -16,7 +16,7 @@ public class Norma extends DocumentoAdministrativo {
         this.valido = valido;
         this.texto = texto;
     }
-    // Getters necessários
+
     public int getNumero(){
         return numero;
     }
@@ -29,7 +29,7 @@ public class Norma extends DocumentoAdministrativo {
         return texto;
     }
 
-    // equals
+
     @Override
     public boolean equals(Object objeto){
         if(this == objeto){
@@ -44,7 +44,7 @@ public class Norma extends DocumentoAdministrativo {
 
         return numero == outraNorma.numero && valido == outraNorma.valido && Objects.equals(texto, outraNorma.texto);
     }
-    // hashCode
+
     @Override
     public int hashCode(){
         return Objects.hash(super.hashCode(), numero, valido, texto);

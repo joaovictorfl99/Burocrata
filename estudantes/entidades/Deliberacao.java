@@ -5,17 +5,17 @@ import java.util.Objects;
 public abstract class Deliberacao extends DocumentoAdministrativo {
     private String texto;
 
-    // Construtor
+
     public Deliberacao(String criador, CodigoCurso codigoCurso, int paginas, String texto){
         super(criador, codigoCurso, paginas);
         this.texto = texto;
     }
-    // Getter, caso necessário
+
     public String getTexto(){
         return texto;
     }
 
-    // equals
+
     @Override
     public boolean equals(Object objeto){
         if(this == objeto){
@@ -29,7 +29,7 @@ public abstract class Deliberacao extends DocumentoAdministrativo {
 
         return Objects.equals(texto, outraDeliberacao.texto);
     }
-    // hashCode
+
     @Override
     public int hashCode(){
         return Objects.hash(super.hashCode(), texto);

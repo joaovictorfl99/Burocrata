@@ -3,13 +3,13 @@ package estudantes.entidades;
 public class Diploma extends Certificado {
     private String habilitacao;
 
-    // Construtor
+
     public Diploma(String criador, professor.entidades.CodigoCurso codigoCurso, int paginas, long autenticacao, String estudante, long matricula, String descricao, String habilitacao) {
         super(criador, codigoCurso, paginas, autenticacao, estudante, matricula, descricao);
         this.habilitacao = habilitacao;
     }
 
-    // Getter, caso necessário
+
     public String getHabilitacao() {
         return habilitacao;
     }
@@ -30,7 +30,7 @@ public class Diploma extends Certificado {
         return java.util.Objects.equals(habilitacao, that.habilitacao);
     }
 
-    // hashCode
+
     @Override
     public int hashCode() {
         return java.util.Objects.hash(super.hashCode(), habilitacao);
